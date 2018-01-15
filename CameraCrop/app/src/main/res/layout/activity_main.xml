@@ -1,27 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <Button
         android:id="@+id/btnPhoto"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="onClickPhoto"
+        android:layout_gravity="center"
         android:text="@string/photo">
     </Button>
     <Button
         android:id="@+id/btnVideo"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnPhoto"
         android:onClick="onClickVideo"
+        android:layout_gravity="center"
         android:text="@string/video">
     </Button>
     <ImageView
-        android:id="@+id/ivPhoto"
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnVideo">
-    </ImageView>
-</LinearLayout>
+        android:maxHeight="200dp"
+        android:layout_gravity="center"
+        android:layout_below="@+id/btnGallery"
+        android:src="@drawable/ic_launcher" />
+    <Button
+        android:id="@+id/btnGallery"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_below="@+id/btnVideo"
+        android:text="@string/gallery" />
+    <VideoView
+        android:id="@+id/videoV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_below="@+id/btnVideo"/>
+</RelativeLayout>
