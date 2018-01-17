@@ -128,3 +128,19 @@ public class MainActivity extends Activity {
     }
 
 }
+vvVideo = (VideoView)findViewById(R.id.videoV);
+        Button PickVideo = (Button) findViewById(R.id.btnVideoGallery);
+        //Настраиваем для нее обработчик нажатий OnClickListener:
+        PickImage.setOnClickListener(new OnClickListener() {
+@Override
+public void onClick(View view) {
+
+        //Вызываем стандартную галерею для выбора изображения с помощью Intent.ACTION_PICK:
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        //Тип получаемых объектов - image:
+        photoPickerIntent.setType("image/*");
+        //Запускаем переход с ожиданием обратного результата в виде информации об изображении:
+        startActivityForResult(photoPickerIntent, Pick_image);
+
+        }
+        });
