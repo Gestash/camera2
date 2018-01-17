@@ -1,10 +1,11 @@
-package com.example.kseniyash.cameracrop;
+package com.example.kseniyash.mediasender;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,52 +18,52 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity   {
 
-    private ImageView imageView;
-    private final int Pick_image = 1;
-    File directory;
-    final int TYPE_PHOTO = 1;
-    final int TYPE_VIDEO = 2;
-
-    final int REQUEST_CODE_PHOTO = 1;
-    final int REQUEST_CODE_VIDEO = 2;
-
-    final String TAG = "myLogs";
 
     ImageView ivPhoto;
+    VideoView vvVideo;
+    File directory;
+    private final int Pick_media = 1;
+    private final int TYPE_PHOTO = 1;
+    private final int TYPE_VIDEO = 2;
+    final int REQUEST_CODE_PHOTO = 1;
+    final int REQUEST_CODE_VIDEO = 2;
+    final String TAG = "myLogs";//строка для вывода логов
+    Uri mUri;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
         createDirectory();
         ivPhoto = (ImageView) findViewById(R.id.imageView);
-        imageView = (ImageView) findViewById(R.id.imageView);
         Button PickImage = (Button) findViewById(R.id.btnGallery);
-        //Настраиваем для нее обработчик нажатий OnClickListener:
-        PickImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                //Вызываем стандартную галерею для выбора изображения с помощью Intent.ACTION_PICK:
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                //Тип получаемых объектов - image:
-                photoPickerIntent.setType("image/*");
-                //Запускаем переход с ожиданием обратного результата в виде информации об изображении:
-                startActivityForResult(photoPickerIntent, Pick_image);
-            }
-        });
     }
+    public void onClickGallery(View view) {
+        switch (view.getId()) {
+            case R.id.btnGallery:
+                //Intent videoPickerIntent = new Intent(this, VideoActivity.class);
+                //startActivity(videoPickerIntent);
+                Intent pickerIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickerIntent.setType("image/* video/*");
+                pickerIntent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(pickerIntent, Pick_media);
+                break;
 
+        }
+    }
     public void onClickPhoto(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, generateFileUri(TYPE_PHOTO));
         startActivityForResult(intent, REQUEST_CODE_PHOTO);
     }
-
     public void onClickVideo(View view) {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, generateFileUri(TYPE_VIDEO));
@@ -73,34 +74,24 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent imageReturnedIntent) {
         switch (requestCode) {
-            case Pick_image:
+            case Pick_media:
                 if (resultCode == RESULT_OK) {
                     try {
-
-                        //Получаем URI изображения, преобразуем его в Bitmap
-                        //объект и отображаем в элементе ImageView нашего интерфейса:
-                        final Uri imageUri = imageReturnedIntent.getData();
-                        final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                        imageView.setImageBitmap(selectedImage);
+                        Uri selectedMediaUri = imageReturnedIntent.getData();
+                        if (selectedMediaUri.toString().contains("image")) {
+                            //handle image
+                            final InputStream imageStream = getContentResolver().openInputStream(selectedMediaUri);
+                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                            ivPhoto.setImageBitmap(selectedImage);
+                        } else  if (selectedMediaUri.toString().contains("video")) {
+                            //handle video
+                        }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
-
-            case TYPE_VIDEO:
-                    if (resultCode == RESULT_OK) {
-                        if (imageReturnedIntent == null) {
-                            Log.d(TAG, "Intent is null");
-                        } else {
-                            Log.d(TAG, "Video uri: " + imageReturnedIntent.getData());
-                        }
-                    } else if (resultCode == RESULT_CANCELED) {
-                        Log.d(TAG, "Canceled");
-                    }
-                }
         }
-
+    }
 
     private Uri generateFileUri(int type) {
         File file = null;
@@ -128,4 +119,3 @@ public class MainActivity extends Activity {
     }
 
 }
-

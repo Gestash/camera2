@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MediaSender</string>
+    <string name="photo">Photo</string>
+    <string name="video">Video</string>
+    <string name="gallery">Choose File</string>
+
+
+</resources>
