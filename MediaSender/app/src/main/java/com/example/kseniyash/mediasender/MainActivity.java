@@ -18,9 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
-
 public class MainActivity extends Activity   {
-
 
     ImageView ivPhoto;
     VideoView vvVideo;
@@ -67,12 +65,12 @@ public class MainActivity extends Activity   {
                 if (resultCode == RESULT_OK) {
                     try {
                         Uri selectedMediaUri = imageReturnedIntent.getData();
-                        if (selectedMediaUri.toString().contains("image")) {
+                        if (selectedMediaUri.toString().contains("image/*")) {
                             //handle image
                             final InputStream imageStream = getContentResolver().openInputStream(selectedMediaUri);
                             final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                             ivPhoto.setImageBitmap(selectedImage);
-                        } else  if (selectedMediaUri.toString().contains("video")) {
+                        } else  if (selectedMediaUri.toString().contains("video/*")) {
                             //handle video
                         }
                     } catch (FileNotFoundException e) {
@@ -106,5 +104,4 @@ public class MainActivity extends Activity   {
         if (!directory.exists())
             directory.mkdirs();
     }
-
 }
