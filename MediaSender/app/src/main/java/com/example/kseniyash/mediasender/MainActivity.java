@@ -41,8 +41,11 @@ public class MainActivity extends Activity   {
         VideoView videoView = (VideoView)findViewById(R.id.videoView);
     }
     public void onClickGallery(View view) {
-        Intent pickerIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        //android.provider.MediaStore.Files.FileColumns.
+
+        Intent pickerIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         pickerIntent.setType("image/* video/*");
+        pickerIntent.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
         pickerIntent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(pickerIntent, Pick_media);
     }
@@ -65,7 +68,7 @@ public class MainActivity extends Activity   {
                 if (resultCode == RESULT_OK) {
                     try {
                         Uri selectedMediaUri = imageReturnedIntent.getData();
-                        if (selectedMediaUri.toString().contains("image/*")) {
+                        if (selectedMediaUri.toString().contains("image")) {
                             //handle image
                             final InputStream imageStream = getContentResolver().openInputStream(selectedMediaUri);
                             final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
