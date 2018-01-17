@@ -15,10 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.view.View.OnClickListener;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 
@@ -43,21 +40,13 @@ public class MainActivity extends Activity   {
         setContentView(R.layout.main);
         createDirectory();
         ivPhoto = (ImageView) findViewById(R.id.imageView);
-        Button PickImage = (Button) findViewById(R.id.btnGallery);
-
+        VideoView videoView = (VideoView)findViewById(R.id.videoView);
     }
     public void onClickGallery(View view) {
-        switch (view.getId()) {
-            case R.id.btnGallery:
-                //Intent videoPickerIntent = new Intent(this, VideoActivity.class);
-                //startActivity(videoPickerIntent);
-                Intent pickerIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                pickerIntent.setType("image/* video/*");
-                pickerIntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(pickerIntent, Pick_media);
-                break;
-
-        }
+        Intent pickerIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickerIntent.setType("image/* video/*");
+        pickerIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(pickerIntent, Pick_media);
     }
     public void onClickPhoto(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

@@ -2,7 +2,6 @@ package com.example.kseniyash.mediasender;
 
 import java.io.File;
 
-
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -22,7 +21,7 @@ public class VideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video);
         enableMediaController = (ToggleButton)findViewById(R.id.enableMediaController);
-        myVideoView = (VideoView)findViewById(R.id.myvideoview);
+        myVideoView = (VideoView)findViewById(R.id.videoView);
         myVideoView.setVideoPath(getViewSrc());
         myVideoView.requestFocus();
         myVideoView.start();
